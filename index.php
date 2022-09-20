@@ -10,6 +10,5 @@
 <body>
     <h2>Jadwal</h2>
     <button><a href="editjadwal.php">Ubah Jadwal</a></button>
-    hahahahs
 </body>
 </html>
