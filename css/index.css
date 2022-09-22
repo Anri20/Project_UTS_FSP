@@ -1,4 +1,26 @@
-a {
-    text-decoration: none;
-    color: black
+.container {
+    border: 5px inset #9db9f0;
+    width: fit-content;
+}
+.table{
+    padding: 50px;
+    padding-top: 30px;
+}
+
+.demo {
+    border: 1px solid #000000;
+    border-collapse: collapse;
+    padding: 5px;
+}
+
+.demo th {
+    border: 1px solid #000000;
+    padding: 5px;
+    background: #F0F0F0;
+    min-width: 100px;
+}
+
+.demo td {
+    border: 1px solid #000000;
+    padding: 5px;
 }
