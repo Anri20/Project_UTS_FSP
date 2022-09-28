@@ -1,4 +1,16 @@
+table {
+    border-spacing: 0px;
+    border: 1px solid black;
+}
+
+td {
+    min-width: 60px;
+    padding: 5px;
+    text-align: center;
+    border: 1px solid black;
+}
+
 a {
     text-decoration: none;
-    color: black
+    color: black;
 }
