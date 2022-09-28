@@ -1,3 +1,7 @@
+<?php
+include "Conn.php";
+include "classEditJadwal.php";
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -21,11 +25,7 @@
     $pass = "";
     $db_name = "uts_fsp_jadwal";
 
-    $conn = mysqli_connect($sname, $uname, $pass, $db_name);
-
-    if ($conn->connect_errno) {
-        die('Connection Failed!. Failed to connect to MySQL = ' + $conn->connect_errno);
-    }
+    $conn = new Conn($sname, $uname, $pass, $db_name);
 
     $sql1 = "select * from hari";
     $hari = $conn->query($sql1);
@@ -34,6 +34,7 @@
     $jam_kuliah = $conn->query($sql2);
     ?>
     <h2>Ubah Jadwal</h2>
+    <h3>Mahasiswa: </h3>
     <table>
         <tr>
             <td></td>
