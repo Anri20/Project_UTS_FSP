@@ -17,4 +17,15 @@ class Edit extends Conn
 
         return $res;
     }
+
+    public function selectJadwal()
+    {
+        $sql = "select * from jadwal ";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param('i', $nrp);
+        $stmt->execute();
+        $res = $stmt->get_result();
+
+        return $res;
+    }
 }

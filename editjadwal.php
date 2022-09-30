@@ -1,6 +1,6 @@
 <?php
 include "Conn.php";
-include "classEditJadwal.php";
+//include "classEditJadwal.php";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -28,10 +28,10 @@ include "classEditJadwal.php";
     $conn = new Conn($sname, $uname, $pass, $db_name);
 
     $sql1 = "select * from hari";
-    $hari = $conn->query($sql1);
+    //$hari = $conn->query($sql1);
 
     $sql2 = "select * from jam_kuliah";
-    $jam_kuliah = $conn->query($sql2);
+    //$jam_kuliah = $conn->query($sql2);
     ?>
     <h2>Ubah Jadwal</h2>
     <h3>Mahasiswa: </h3>
