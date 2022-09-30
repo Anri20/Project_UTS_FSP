@@ -24,58 +24,87 @@ require("class/classEditJadwal.php");
     $pass = "";
     $db_name = "uts_fsp_jadwal";
 
-    $conn = new Conn($sname, $uname, $pass, $db_name);
+    $conn = new Edit($sname, $uname, $pass, $db_name);
 
     $sql1 = "select * from hari";
-    $hari = $conn->sqlQuery($sql1);
+    $hari = $conn->query($sql1);
 
     $sql2 = "select * from jam_kuliah";
-    $jam_kuliah = $conn->sqlQuery($sql2);
+    $jam_kuliah = $conn->query($sql2);
     ?>
     <h2>Ubah Jadwal</h2>
     <h3>Mahasiswa: </h3>
-    <table>
-        <tr>
-            <td></td>
-            <?php
-            while ($row1 = $hari->fetch_assoc()) {
-                echo "<td>" . $row1['nama'] . "</td>";
-            }
-            ?>
-        </tr>
-        <?php
-        while ($row2 = $jam_kuliah->fetch_assoc()) {
-            echo "<tr>
-                    <td style='min-width: 100px;'>
-                    " . substr($row2['jam_mulai'], 0, 5) . " - " . substr($row2['jam_selesai'], 0, 5) . "
-                    </td>
-                    <td>
-                        <input type='checkbox'>
-                    </td>
-                    <td>
-                        <input type='checkbox'>
-                    </td>
-                    <td>
-                        <input type='checkbox'>
-                    </td>
-                    <td>
-                        <input type='checkbox'>
-                    </td>
-                    <td>
-                        <input type='checkbox'>
-                    </td>
-                    <td>
-                        <input type='checkbox'>
-                    </td>
-                    <td>
-                        <input type='checkbox'>
-                    </td>
-                </tr>";
-        }
-        ?>
-    </table>
-    <br>
-    <button><a href="index.php">Kembali</a></button>
+    <section style="display: inline-block;">
+        <form action="editjadwal_crud.php" method="post" id="formEdit">
+            <table>
+                <tr>
+                    <td></td>
+                    <?php
+                    while ($row1 = $hari->fetch_assoc()) {
+                        echo "<td>" . $row1['nama'] . "</td>";
+                    }
+                    ?>
+                </tr>
+                <?php
+                $i = 1;
+                $nrp = '160420400';
+                // $nrp = $_POST['nrp'];
+                while ($row2 = $jam_kuliah->fetch_assoc()) {
+                    for ($j = 1; $j <= 7; $j++) {
+                        $jadwal = $conn->getJadwal($nrp, $j, $i);
+                        if ($j == 1) {
+                            $minggu = ($jadwal->num_rows > 0) ? "<input type='checkbox' id='" . $i . "_" . $j . "' checked>" : "<input type='checkbox' id='" . $i . "_" . $j . "'>";
+                        } else if ($j == 2) {
+                            $senin = ($jadwal->num_rows > 0) ? "<input type='checkbox' id='" . $i . "_" . $j . "' checked>" : "<input type='checkbox' id='" . $i . "_" . $j . "'>";
+                        } else if ($j == 3) {
+                            $selasa = ($jadwal->num_rows > 0) ? "<input type='checkbox' id='" . $i . "_" . $j . "' checked>" : "<input type='checkbox' id='" . $i . "_" . $j . "'>";
+                        } else if ($j == 4) {
+                            $rabu = ($jadwal->num_rows > 0) ? "<input type='checkbox' id='" . $i . "_" . $j . "' checked>" : "<input type='checkbox' id='" . $i . "_" . $j . "'>";
+                        } else if ($j == 5) {
+                            $kamis = ($jadwal->num_rows > 0) ? "<input type='checkbox' id='" . $i . "_" . $j . "' checked>" : "<input type='checkbox' id='" . $i . "_" . $j . "'>";
+                        } else if ($j == 6) {
+                            $jumat = ($jadwal->num_rows > 0) ? "<input type='checkbox' id='" . $i . "_" . $j . "' checked>" : "<input type='checkbox' id='" . $i . "_" . $j . "'>";
+                        } else if ($j == 7) {
+                            $sabtu = ($jadwal->num_rows > 0) ? "<input type='checkbox' id='" . $i . "_" . $j . "' checked>" : "<input type='checkbox' id='" . $i . "_" . $j . "'>";
+                        }
+                    }
+                    echo "<tr>
+                            <td style='min-width: 100px;'>
+                            " . substr($row2['jam_mulai'], 0, 5) . " - " . substr($row2['jam_selesai'], 0, 5) . "
+                            </td>
+                            <td>
+                                $minggu
+                            </td>
+                            <td>
+                                $senin
+                            </td>
+                            <td>
+                                $selasa
+                            </td>
+                            <td>
+                                $rabu
+                            </td>
+                            <td>
+                                $kamis
+                            </td>
+                            <td>
+                                $jumat
+                            </td>
+                            <td>
+                                $sabtu
+                            </td>
+                        </tr>";
+                    $i++;
+                }
+                ?>
+            </table>
+        </form>
+        <br>
+        <div style="display: flex; justify-content: space-between;">
+            <button><a href="index.php">Kembali</a></button>
+            <button type="submit" form="formEdit">Submit</button>
+        </div>
+    </section>
 </body>
 
 </html>

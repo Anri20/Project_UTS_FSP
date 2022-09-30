@@ -14,8 +14,6 @@ class Mahasiswa extends Conn
 
         return $res;
     }
-
-    
 } 
 
 ?>

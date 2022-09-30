@@ -12,7 +12,7 @@ class Conn
         }
     }
 
-    public function sqlQuery($sql)
+    public function query($sql)
     {
         return $this->conn->query($sql);
     }
