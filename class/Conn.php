@@ -12,6 +12,11 @@ class Conn
         }
     }
 
+    public function sqlQuery($sql)
+    {
+        return $this->conn->query($sql);
+    }
+
     function __destruct()
     {
         $this->conn->close();
