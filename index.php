@@ -16,18 +16,27 @@ require("class/classMahasiswa.php");
 <body>
 
     <div class="container">
+    <?php
+    $conn = new mysqli("localhost","root","","uts_fsp_jadwal");
+    $sql1 = "select * from hari";
+    $hari = $conn->query($sql1);
+
+    $sql2 = "select * from jam_kuliah";
+    $jam_kuliah = $conn->query($sql2);
+    ?>
         <h2 style="text-align: center">Jadwal</h2>
         <div style="margin: 30px">
             <?php
             $mahasiswa = new Mahasiswa("localhost", "root", "", "uts_fsp_jadwal");
             $res = $mahasiswa->getMahasiswa();
-            echo "Mahasiswa: <select name='Mahasiswa' id='mahasiswa'>
+            echo "<span>Mahasiswa: <select name='Mahasiswa' id='mahasiswa'>
             <option>--Silahkan Pilih Nama--</option>";
             while ($row = $res->fetch_assoc()) {
                 echo "<option>" . $row['nama'] . "</option>";
             }
             echo "</select> 
-            <button>Pilih</button>";
+            <form method='GET'>
+            <button>Pilih</button>";          
             ?>
         </div>
         <div class="table">
@@ -36,7 +45,7 @@ require("class/classMahasiswa.php");
                     <td></td>
                     <?php
                     while ($row1 = $hari->fetch_assoc()) {
-                        echo "<td>" . $row1['nama'] . "</td>";
+                        echo "<td class='demo td'>" . $row1['nama'] . "</td>";
                     }
                     ?>
                 </tr>
@@ -47,28 +56,29 @@ require("class/classMahasiswa.php");
                     " . substr($row2['jam_mulai'], 0, 5) . " - " . substr($row2['jam_selesai'], 0, 5) . "
                     </td>
                     <td>
-                        
+                       
                     </td>
                     <td>
-                        
+                       
                     </td>
                     <td>
-                        
+                       
                     </td>
                     <td>
-                        
+                       
                     </td>
                     <td>
-                        
+                       
                     </td>
                     <td>
-                        
+                       
                     </td>
                     <td>
-                        
+                    
                     </td>
                 </tr>";
                 }
+                echo "</form>";
                 ?>
         </div>
         <div style="text-align: center">
