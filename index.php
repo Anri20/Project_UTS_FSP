@@ -20,23 +20,32 @@ require("class/classMahasiswa.php");
     $conn = new mysqli("localhost","root","","uts_fsp_jadwal");
     $sql1 = "select * from hari";
     $hari = $conn->query($sql1);
-
+    $mahasiswa = new Mahasiswa("localhost", "root", "", "uts_fsp_jadwal");
+    $listHari = array();
     $sql2 = "select * from jam_kuliah";
     $jam_kuliah = $conn->query($sql2);
+    if (isset($_GET['id'])) {
+        $id = $_GET['id'];
+        $jadwalmahasiswa = $mahasiswa->getJadwalMahasiswa($id);   
+      }
+      else{
+          $id = 0;        
+      }
     ?>
         <h2 style="text-align: center">Jadwal</h2>
         <div style="margin: 30px">
             <?php
-            $mahasiswa = new Mahasiswa("localhost", "root", "", "uts_fsp_jadwal");
-            $res = $mahasiswa->getMahasiswa();
-            echo "<span>Mahasiswa: <select name='Mahasiswa' id='mahasiswa'>
-            <option>--Silahkan Pilih Nama--</option>";
-            while ($row = $res->fetch_assoc()) {
-                echo "<option>" . $row['nama'] . "</option>";
+            
+            // $res = $mahasiswa->getMahasiswa();
+            $res = $conn->query("select * from mahasiswa");
+            echo "Mahasiswa: <select name='id'>
+            <option id = '0'>--Silahkan Pilih Nama--</option>";
+            while ($row = $res->fetch_assoc()) {             
+                echo "<option id='".$row['nrp']."'>".$row['nama']."</option>";
             }
             echo "</select> 
-            <form method='GET'>
-            <button>Pilih</button>";          
+            <form method='GET' action='index.php'>
+            <input type='submit' name='submit' value='simpan'\>";          
             ?>
         </div>
         <div class="table">
@@ -46,6 +55,7 @@ require("class/classMahasiswa.php");
                     <?php
                     while ($row1 = $hari->fetch_assoc()) {
                         echo "<td class='demo td'>" . $row1['nama'] . "</td>";
+                        $listHari[] = $row1['nama']; 
                     }
                     ?>
                 </tr>
@@ -53,33 +63,25 @@ require("class/classMahasiswa.php");
                 while ($row2 = $jam_kuliah->fetch_assoc()) {
                     echo "<tr>
                     <td style='min-width: 100px;'>
-                    " . substr($row2['jam_mulai'], 0, 5) . " - " . substr($row2['jam_selesai'], 0, 5) . "
-                    </td>
-                    <td>
-                       
-                    </td>
-                    <td>
-                       
-                    </td>
-                    <td>
-                       
-                    </td>
-                    <td>
-                       
-                    </td>
-                    <td>
-                       
-                    </td>
-                    <td>
-                       
-                    </td>
-                    <td>
+                    " . substr($row2['jam_mulai'], 0, 5) . " - " . substr($row2['jam_selesai'], 0, 5);
+                    $sql3 = "SELECT m.nama, jk.jam_mulai, jk.jam_selesai, h.nama as namaHari From mahasiswa m inner join jadwal j on m.nrp = j.nrp inner join jam_kuliah jk on j.idjam_kuliah = jk.idjam_kuliah inner join hari h on j.idhari = h.idhari";
+                    $datajadwal = $conn->query($sql3);
                     
-                    </td>
-                </tr>";
+                    foreach ($listHari as $key => $value) {
+                        echo "<td>";
+                        while($row3 = $hari->fetch_assoc()){
+                            if($row3['namaHari'] == $value)
+                            {
+                                echo "v";
+                            }
+                        }
+                        echo "</td>";
+                    }
+                echo "</tr>";
                 }
                 echo "</form>";
                 ?>
+            </table>
         </div>
         <div style="text-align: center">
             <button><a href="editjadwal.php">Ubah Jadwal</a></button>
@@ -87,9 +89,6 @@ require("class/classMahasiswa.php");
 
     </div>
 
-</body>
-
-</html>
 </body>
 
 </html>
