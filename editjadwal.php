@@ -20,9 +20,6 @@ require("class/classEditJadwal.php");
 
 <body>
     <?php
-    if (isset($_POST['arr'])) {
-        echo 'success';
-    }
     $sname = "localhost";
     $uname = "root";
     $pass = "";
@@ -35,9 +32,16 @@ require("class/classEditJadwal.php");
 
     $sql2 = "select * from jam_kuliah";
     $jam_kuliah = $conn->query($sql2);
+
+    $mahasiswa = '';
+    if (isset($_COOKIE['nrp'])) {
+        $mahasiswa = $_COOKIE['mahasiswa'];
+    } else {
+        header('Location: index.php?message=1');
+    }
     ?>
     <h2>Ubah Jadwal</h2>
-    <h3>Mahasiswa: </h3>
+    <h3>Mahasiswa: <?php echo $mahasiswa ?></h3>
     <section style="display: inline-block;">
         <form action="editjadwal_crud.php" method="post" id="formEdit">
             <table id="jadwal">
@@ -51,8 +55,7 @@ require("class/classEditJadwal.php");
                 </tr>
                 <?php
                 $i = 1;
-                $nrp = '160420400';
-                // $nrp = $_POST['nrp'];
+                $nrp = $_COOKIE['nrp'];
                 while ($row2 = $jam_kuliah->fetch_assoc()) {
                     for ($j = 1; $j <= 7; $j++) {
                         $jadwal = $conn->getJadwal($nrp, $j, $i);
@@ -101,6 +104,7 @@ require("class/classEditJadwal.php");
                     $i++;
                 }
                 echo "<input type='hidden' name='nrp' value='$nrp'>";
+
                 ?>
             </table>
         </form>

@@ -28,29 +28,31 @@ require("class/classMahasiswa.php");
         ?>
         <h2 style="text-align: center">Jadwal</h2>
         <div style="margin: 30px">
-        <form action="index.php" method="post">
-            Mahasiswa: <select name="mahasiswa" id="mahasiswa">
-                <option hidden>--Silakan Pilih Nama--</option>
-            <?php
-            $pilihan = "";
-            $res = $conn->query("select * from mahasiswa");
-            while ($row = $res->fetch_assoc()) {
-                $terpilih =  "";
-                if (isset($_POST['mahasiswa'])) {
-                    $pilihan = $_POST['mahasiswa'];
-                    if ($row['nrp'] == $pilihan) {
-                        echo "<option value='" . $row['nrp'] . "' selected>" . $row['nama'] . "</option>";
+            <form action="index.php" method="post">
+                Mahasiswa: <select name="mahasiswa" id="mahasiswa">
+                    <option hidden>--Silakan Pilih Nama--</option>
+                    <?php
+                    $res = $conn->query("select * from mahasiswa");
+                    if (isset($_POST['mahasiswa'])) {
+                        $pilihan = $_POST['mahasiswa'];
+                        setcookie('nrp', $_POST['mahasiswa'], time() + (86400));
+                        while ($row = $res->fetch_assoc()) {
+                            if ($row['nrp'] == $pilihan) {
+                                echo "<option value='" . $row['nrp'] . "' selected>" . $row['nama'] . "</option>";
+                                setcookie('mahasiswa', $row['nama'], time() + (86400));
+                            } else {
+                                echo "<option value='" . $row['nrp'] . "'>" . $row['nama'] . "</option>";
+                            }
+                        }
                     } else {
-                        echo "<option value='" . $row['nrp'] . "'>" . $row['nama'] . "</option>";
+                        while ($row = $res->fetch_assoc()) {
+                            echo "<option value='" . $row['nrp'] . "'>" . $row['nama'] . "</option>";
+                        }
                     }
-                } else {
-                    echo "<option value='" . $row['nrp'] . "'>" . $row['nama'] . "</option>";
-                }
-            }           
-            echo "<input type='submit' name='btnsubmit' id='btnsubmit' value='Pilih'\>";
-            ?>
-            </select>
-        </form>
+                    ?>
+                </select>
+                <input type='submit' name='btnsubmit' id='btnsubmit' value='Pilih'>
+            </form>
         </div>
         <div class="table">
             <table class="demo">
@@ -87,7 +89,14 @@ require("class/classMahasiswa.php");
             </table>
         </div>
         <div style="text-align: center">
-            <button><a href="editjadwal.php">Ubah Jadwal</a></button>
+            <form action="editjadwal.php" method="post">
+                <?php
+                if (isset($pilihan)) {
+                    echo "<input type='hidden' name='nrp' value='$pilihan'>";
+                }
+                ?>
+                <input type="submit" value="Ubah Jadwal">
+            </form>
         </div>
 
     </div>

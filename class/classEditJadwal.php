@@ -34,14 +34,13 @@ class Edit extends Conn
         $stmt->execute();
     }
 
-    public function selectJadwal()
-    {
-        $sql = "select * from jadwal ";
+    public function getMahasiswa(){
+        $sql = "select * from mahasiswa where nrp = ?";
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param('i', $nrp);
         $stmt->execute();
         $res = $stmt->get_result();
-
+        
         return $res;
     }
 }

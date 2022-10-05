@@ -38,9 +38,9 @@ foreach ($arr as $value) {
     unset($empty[array_search($value, $empty)]);
 }
 
-var_dump($arr);
-echo '<br>';
-var_dump($empty);
+// var_dump($arr);
+// echo '<br>';
+// var_dump($empty);
 
 // delete with $empty
 foreach ($empty as $e) {
