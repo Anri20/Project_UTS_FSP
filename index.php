@@ -28,33 +28,29 @@ require("class/classMahasiswa.php");
         ?>
         <h2 style="text-align: center">Jadwal</h2>
         <div style="margin: 30px">
+        <form action="index.php" method="post">
+            Mahasiswa: <select name="mahasiswa" id="mahasiswa">
+                <option hidden>--Silakan Pilih Nama--</option>
             <?php
-
-            // $res = $mahasiswa->getMahasiswa();
-            echo "<form method='POST' action='index.php' >";
             $pilihan = "";
-
             $res = $conn->query("select * from mahasiswa");
-            echo "Mahasiswa: <select name='Mahasiswa'>
-            <option>--Silahkan Pilih Nama--</option>";
             while ($row = $res->fetch_assoc()) {
                 $terpilih =  "";
-
-                if (isset($_POST['submit'])) {
-                    $pilihan = $_POST['Mahasiswa'];
+                if (isset($_POST['mahasiswa'])) {
+                    $pilihan = $_POST['mahasiswa'];
                     if ($row['nrp'] == $pilihan) {
-                        echo "<option value='" . $row['nrp'] . "' selected = 'selected'>" . $row['nama'] . "</option>";
+                        echo "<option value='" . $row['nrp'] . "' selected>" . $row['nama'] . "</option>";
                     } else {
                         echo "<option value='" . $row['nrp'] . "'>" . $row['nama'] . "</option>";
                     }
                 } else {
                     echo "<option value='" . $row['nrp'] . "'>" . $row['nama'] . "</option>";
                 }
-            }
-            echo "</select>             
-            <input type='submit' name='btnsubmit' id='btnsubmit' value='Pilih'\>";
-            echo "</form>";
+            }           
+            echo "<input type='submit' name='btnsubmit' id='btnsubmit' value='Pilih'\>";
             ?>
+            </select>
+        </form>
         </div>
         <div class="table">
             <table class="demo">
@@ -98,12 +94,12 @@ require("class/classMahasiswa.php");
 
 </body>
 <script>
-    $('#Mahasiswa').change(function() {
-        localStorage.nrp = $('#Mahasiswa').val();
-    })
-    $('#btnsubmit').click(function(){
-        alert($pilihan);
-    })
+    // $('#Mahasiswa').change(function() {
+    //     localStorage.nrp = $('#Mahasiswa').val();
+    // })
+    // $('#btnsubmit').click(function(){
+    //     alert($pilihan);
+    // })
 </script>
 
 </html>
