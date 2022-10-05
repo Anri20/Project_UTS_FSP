@@ -27,4 +27,5 @@ class Mahasiswa extends Conn
     }
 } 
 
+
 ?>

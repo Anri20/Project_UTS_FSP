@@ -69,15 +69,17 @@ require("class/classMahasiswa.php");
                 while ($row2 = $jam_kuliah->fetch_assoc()) {
                     echo "<tr>
                     <td style='min-width: 100px;'>
-                    " . substr($row2['jam_mulai'], 0, 5) . " - " . substr($row2['jam_selesai'], 0, 5);
-                    $sql3 = "SELECT m.nama, jk.jam_mulai, jk.jam_selesai, h.nama as namaHari From mahasiswa m inner join jadwal j on m.nrp = j.nrp inner join jam_kuliah jk on j.idjam_kuliah = jk.idjam_kuliah inner join hari h on j.idhari = h.idhari";
-                    $datajadwal = $conn->query($sql3);
-
+                    " . substr($row2['jam_mulai'], 0, 5) . " - " . substr($row2['jam_selesai'], 0, 5). "</td>";
+                    $resJadwalMahasiswa = $mahasiswa->getJadwalMahasiswa($pilihan);
                     foreach ($listHari as $key => $value) {
                         echo "<td>";
                         while ($row3 = $hari->fetch_assoc()) {
-                            if ($row3['namaHari'] == $value) {
-                                echo "v";
+
+                            while ($row4 = $resJadwalMahasiswa->fetch_assoc()) {
+                                if ($row3['nama'] == $row4['namaHari']) {
+                                    echo "v";
+                                }
+                                
                             }
                         }
                         echo "</td>";
