@@ -15,10 +15,14 @@ require("class/classEditJadwal.php");
             border: 1px solid black;
         }
     </style>
+    <script src="js/jquery-3.6.1.min.js"></script>
 </head>
 
 <body>
     <?php
+    if (isset($_POST['arr'])) {
+        echo 'success';
+    }
     $sname = "localhost";
     $uname = "root";
     $pass = "";
@@ -36,7 +40,7 @@ require("class/classEditJadwal.php");
     <h3>Mahasiswa: </h3>
     <section style="display: inline-block;">
         <form action="editjadwal_crud.php" method="post" id="formEdit">
-            <table>
+            <table id="jadwal">
                 <tr>
                     <td></td>
                     <?php
@@ -53,19 +57,19 @@ require("class/classEditJadwal.php");
                     for ($j = 1; $j <= 7; $j++) {
                         $jadwal = $conn->getJadwal($nrp, $j, $i);
                         if ($j == 1) {
-                            $minggu = ($jadwal->num_rows > 0) ? "<input type='checkbox' id='" . $i . "_" . $j . "' checked>" : "<input type='checkbox' id='" . $i . "_" . $j . "'>";
+                            $minggu = ($jadwal->num_rows > 0) ? "<input type='checkbox' id='" . $i . "_" . $j . "' class='checkbox' name='" . $i . "_" . $j . "' value='" . $i . "_" . $j . "' checked>" : "<input type='checkbox' id='" . $i . "_" . $j . "' class='checkbox' name='" . $i . "_" . $j . "' value='" . $i . "_" . $j . "'>";
                         } else if ($j == 2) {
-                            $senin = ($jadwal->num_rows > 0) ? "<input type='checkbox' id='" . $i . "_" . $j . "' checked>" : "<input type='checkbox' id='" . $i . "_" . $j . "'>";
+                            $senin = ($jadwal->num_rows > 0) ? "<input type='checkbox' id='" . $i . "_" . $j . "' class='checkbox' name='" . $i . "_" . $j . "' value='" . $i . "_" . $j . "' checked>" : "<input type='checkbox' id='" . $i . "_" . $j . "' class='checkbox' name='" . $i . "_" . $j . "' value='" . $i . "_" . $j . "'>";
                         } else if ($j == 3) {
-                            $selasa = ($jadwal->num_rows > 0) ? "<input type='checkbox' id='" . $i . "_" . $j . "' checked>" : "<input type='checkbox' id='" . $i . "_" . $j . "'>";
+                            $selasa = ($jadwal->num_rows > 0) ? "<input type='checkbox' id='" . $i . "_" . $j . "' class='checkbox' name='" . $i . "_" . $j . "' value='" . $i . "_" . $j . "' checked>" : "<input type='checkbox' id='" . $i . "_" . $j . "' class='checkbox' name='" . $i . "_" . $j . "' value='" . $i . "_" . $j . "'>";
                         } else if ($j == 4) {
-                            $rabu = ($jadwal->num_rows > 0) ? "<input type='checkbox' id='" . $i . "_" . $j . "' checked>" : "<input type='checkbox' id='" . $i . "_" . $j . "'>";
+                            $rabu = ($jadwal->num_rows > 0) ? "<input type='checkbox' id='" . $i . "_" . $j . "' class='checkbox' name='" . $i . "_" . $j . "' value='" . $i . "_" . $j . "' checked>" : "<input type='checkbox' id='" . $i . "_" . $j . "' class='checkbox' name='" . $i . "_" . $j . "' value='" . $i . "_" . $j . "'>";
                         } else if ($j == 5) {
-                            $kamis = ($jadwal->num_rows > 0) ? "<input type='checkbox' id='" . $i . "_" . $j . "' checked>" : "<input type='checkbox' id='" . $i . "_" . $j . "'>";
+                            $kamis = ($jadwal->num_rows > 0) ? "<input type='checkbox' id='" . $i . "_" . $j . "' class='checkbox' name='" . $i . "_" . $j . "' value='" . $i . "_" . $j . "' checked>" : "<input type='checkbox' id='" . $i . "_" . $j . "' class='checkbox' name='" . $i . "_" . $j . "' value='" . $i . "_" . $j . "'>";
                         } else if ($j == 6) {
-                            $jumat = ($jadwal->num_rows > 0) ? "<input type='checkbox' id='" . $i . "_" . $j . "' checked>" : "<input type='checkbox' id='" . $i . "_" . $j . "'>";
+                            $jumat = ($jadwal->num_rows > 0) ? "<input type='checkbox' id='" . $i . "_" . $j . "' class='checkbox' name='" . $i . "_" . $j . "' value='" . $i . "_" . $j . "' checked>" : "<input type='checkbox' id='" . $i . "_" . $j . "' class='checkbox' name='" . $i . "_" . $j . "' value='" . $i . "_" . $j . "'>";
                         } else if ($j == 7) {
-                            $sabtu = ($jadwal->num_rows > 0) ? "<input type='checkbox' id='" . $i . "_" . $j . "' checked>" : "<input type='checkbox' id='" . $i . "_" . $j . "'>";
+                            $sabtu = ($jadwal->num_rows > 0) ? "<input type='checkbox' id='" . $i . "_" . $j . "' class='checkbox' name='" . $i . "_" . $j . "' value='" . $i . "_" . $j . "' checked>" : "<input type='checkbox' id='" . $i . "_" . $j . "' class='checkbox' name='" . $i . "_" . $j . "' value='" . $i . "_" . $j . "'>";
                         }
                     }
                     echo "<tr>
@@ -96,6 +100,7 @@ require("class/classEditJadwal.php");
                         </tr>";
                     $i++;
                 }
+                echo "<input type='hidden' name='nrp' value='$nrp'>";
                 ?>
             </table>
         </form>
@@ -106,5 +111,46 @@ require("class/classEditJadwal.php");
         </div>
     </section>
 </body>
+<script>
+    // let arr = []
+    // $('#jadwal').find('input:checkbox').each(function() {
+    //     if ($(this).prop('checked') == true) {
+    //         arr.push($(this).val());
+    //     }
+
+    //     $.ajax({
+    //         type: 'POST',
+    //         url: 'editjadwal_crud.php',
+    //         data: {
+    //             'arr': arr
+    //         },
+    //     }).done(function(resp) {
+    //         // alert('success');
+    //     })
+    // })
+    // console.log(arr);
+    // $('.checkbox').change(function() {
+    //     if ($(this).prop('checked') == true) {
+    //         arr.push($(this).val());
+    //     } else {
+    //         let remove_item = $(this).val();
+    //         arr = jQuery.grep(arr, function(value) {
+    //             return value != remove_item;
+    //         })
+    //     }
+
+    //     // console.log(arr);
+
+    //     $.ajax({
+    //         type: 'POST',
+    //         url: 'editjadwal_crud.php',
+    //         data: {
+    //             'arr': arr
+    //         },
+    //     }).done(function(resp) {
+    //         // alert('success');
+    //     })
+    // })
+</script>
 
 </html>
