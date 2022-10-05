@@ -12,19 +12,24 @@ require("class/classMahasiswa.php");
     <title>Jadwal</title>
     <link rel="stylesheet" href="css/index.css">
     <script src="js/jquery-3.6.1.min.js"></script>
+    <style>
+        td{
+            text-align: center;
+        }
+    </style>
 </head>
 
 <body>
 
     <div class="container">
         <?php
-        $conn = new mysqli("localhost", "root", "", "uts_fsp_jadwal");
-        $sql1 = "select * from hari";
-        $hari = $conn->query($sql1);
         $mahasiswa = new Mahasiswa("localhost", "root", "", "uts_fsp_jadwal");
-        $listHari = array();
+        
+        $sql1 = "select * from hari";
+        $hari = $mahasiswa->query($sql1);
+
         $sql2 = "select * from jam_kuliah";
-        $jam_kuliah = $conn->query($sql2);
+        $jam_kuliah = $mahasiswa->query($sql2);
         ?>
         <h2 style="text-align: center">Jadwal</h2>
         <div style="margin: 30px">
@@ -32,7 +37,7 @@ require("class/classMahasiswa.php");
                 Mahasiswa: <select name="mahasiswa" id="mahasiswa">
                     <option hidden>--Silakan Pilih Nama--</option>
                     <?php
-                    $res = $conn->query("select * from mahasiswa");
+                    $res = $mahasiswa->query("select * from mahasiswa");
                     if (isset($_POST['mahasiswa'])) {
                         $pilihan = $_POST['mahasiswa'];
                         setcookie('nrp', $_POST['mahasiswa'], time() + (86400));
@@ -61,30 +66,65 @@ require("class/classMahasiswa.php");
                     <?php
                     while ($row1 = $hari->fetch_assoc()) {
                         echo "<td class='demo td'>" . $row1['nama'] . "</td>";
-                        $listHari[] = $row1['nama'];
                     }
                     ?>
                 </tr>
                 <?php
-                while ($row2 = $jam_kuliah->fetch_assoc()) {
+                $i = 1;
+                // echo $jam_kuliah->num_rows;
+                 while ($row2 = $jam_kuliah->fetch_assoc()) {
+                     //echo "test <br>";
+                     //echo $i;
+                     for ($j = 1; $j <= 7; $j++) {
+                        //  echo $i."_".$j."<br>";
+                        $jadwal = $mahasiswa->getJadwalMahasiswa($pilihan, $j, $i);
+                        // echo $jadwal->num_rows."<br>";
+                        if ($j == 1) {
+                            $minggu = ($jadwal->num_rows > 0) ? "v" : "";
+                        } else if ($j == 2) {
+                            $senin = ($jadwal->num_rows > 0) ? "v" : "";
+                        } else if ($j == 3) {
+                            $selasa = ($jadwal->num_rows > 0) ? "v" : "";
+                        } else if ($j == 4) {
+                            $rabu = ($jadwal->num_rows > 0) ? "v" : "";
+                        } else if ($j == 5) {
+                            $kamis = ($jadwal->num_rows > 0) ? "v" : "";
+                        } else if ($j == 6) {
+                            $jumat = ($jadwal->num_rows > 0) ? "v" : "";
+                        } else if ($j == 7) {
+                            $sabtu = ($jadwal->num_rows > 0) ? "v" : "";
+                        }
+
+                       
+                
+                    }
                     echo "<tr>
                     <td style='min-width: 100px;'>
-                    " . substr($row2['jam_mulai'], 0, 5) . " - " . substr($row2['jam_selesai'], 0, 5). "</td>";
-                    $resJadwalMahasiswa = $mahasiswa->getJadwalMahasiswa($pilihan);
-                    foreach ($listHari as $key => $value) {
-                        echo "<td>";
-                        while ($row3 = $hari->fetch_assoc()) {
-
-                            while ($row4 = $resJadwalMahasiswa->fetch_assoc()) {
-                                if ($row3['nama'] == $row4['namaHari']) {
-                                    echo "v";
-                                }
-                                
-                            }
-                        }
-                        echo "</td>";
-                    }
-                    echo "</tr>";
+                    " . substr($row2['jam_mulai'], 0, 5) . " - " . substr($row2['jam_selesai'], 0, 5) . "
+                    </td>
+                    <td>
+                        $minggu
+                    </td>
+                    <td>
+                        $senin
+                    </td>
+                    <td>
+                        $selasa
+                    </td>
+                    <td>
+                        $rabu
+                    </td>
+                    <td>
+                        $kamis
+                    </td>
+                    <td>
+                        $jumat
+                    </td>
+                    <td>
+                        $sabtu
+                    </td>
+                </tr>";
+                     $i++;
                 }
 
                 ?>

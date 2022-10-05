@@ -15,17 +15,14 @@ class Mahasiswa extends Conn
         return $res;
     }
 
-    public function getJadwalMahasiswa($nrp)
+    public function getJadwalMahasiswa($nrp,$idhari,$idjam_kuliah)
     {
-        $sql = "SELECT m.nama, jk.jam_mulai, jk.jam_selesai, h.nama as namaHari From mahasiswa m inner join jadwal j on m.nrp = j.nrp inner join jam_kuliah jk on j.idjam_kuliah = jk.idjam_kuliah inner join hari h on j.idhari = h.idhari where m.nrp = ?";
+        $sql = "SELECT * FROM jadwal where nrp = ? and idhari = ? and idjam_kuliah = ?";
         $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param('s', $nrp);
+        $stmt->bind_param('sii', $nrp,$idhari,$idjam_kuliah);
         $stmt->execute();
         $res = $stmt->get_result();
 
         return $res;
     }
-} 
-
-
-?>
+}
