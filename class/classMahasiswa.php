@@ -17,7 +17,7 @@ class Mahasiswa extends Conn
 
     public function getJadwalMahasiswa($nrp)
     {
-        $sql = "select idhari, idjam_kuliah from jadwal where nrp = ?";
+        $sql = "SELECT m.nama, jk.jam_mulai, jk.jam_selesai, h.nama as namaHari From mahasiswa m inner join jadwal j on m.nrp = j.nrp inner join jam_kuliah jk on j.idjam_kuliah = jk.idjam_kuliah inner join hari h on j.idhari = h.idhari where m.nrp = ?";
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param('s', $nrp);
         $stmt->execute();
