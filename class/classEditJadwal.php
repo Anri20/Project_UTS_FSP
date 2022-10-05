@@ -37,10 +37,10 @@ class Edit extends Conn
     public function getMahasiswa(){
         $sql = "select * from mahasiswa where nrp = ?";
         $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param('i', $nrp);
+        $stmt->bind_param('s', $nrp);
         $stmt->execute();
         $res = $stmt->get_result();
-        
+
         return $res;
     }
 }
