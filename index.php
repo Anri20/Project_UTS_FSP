@@ -10,13 +10,9 @@ require("class/classMahasiswa.php");
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jadwal</title>
-    <link rel="stylesheet" href="css/index.css">
+
+    <link rel="stylesheet" type="text/css" href="css/index.css">
     <script src="js/jquery-3.6.1.min.js"></script>
-    <style>
-        td{
-            text-align: center;
-        }
-    </style>
 </head>
 
 <body>
@@ -24,7 +20,7 @@ require("class/classMahasiswa.php");
     <div class="container">
         <?php
         $mahasiswa = new Mahasiswa("localhost", "root", "", "uts_fsp_jadwal");
-        
+
         $sql1 = "select * from hari";
         $hari = $mahasiswa->query($sql1);
 
@@ -32,19 +28,30 @@ require("class/classMahasiswa.php");
         $jam_kuliah = $mahasiswa->query($sql2);
         ?>
         <h2 style="text-align: center">Jadwal</h2>
-        <div style="margin: 30px">
+        <div class="search">
             <form action="index.php" method="post">
                 Mahasiswa: <select name="mahasiswa" id="mahasiswa">
                     <option hidden>--Silakan Pilih Nama--</option>
                     <?php
+                    $pilihan = '';
                     $res = $mahasiswa->query("select * from mahasiswa");
+
                     if (isset($_POST['mahasiswa'])) {
                         $pilihan = $_POST['mahasiswa'];
-                        setcookie('nrp', $_POST['mahasiswa'], time() + (86400));
+                        setcookie('nrp', $_POST['mahasiswa'], time() + (3600));
                         while ($row = $res->fetch_assoc()) {
                             if ($row['nrp'] == $pilihan) {
                                 echo "<option value='" . $row['nrp'] . "' selected>" . $row['nama'] . "</option>";
-                                setcookie('mahasiswa', $row['nama'], time() + (86400));
+                                setcookie('mahasiswa', $row['nama'], time() + (3600));
+                            } else {
+                                echo "<option value='" . $row['nrp'] . "'>" . $row['nama'] . "</option>";
+                            }
+                        }
+                    } else if (isset($_COOKIE['nrp'])) {
+                        $pilihan = $_COOKIE['nrp'];
+                        while ($row = $res->fetch_assoc()) {
+                            if ($row['nrp'] == $pilihan) {
+                                echo "<option value='" . $row['nrp'] . "' selected>" . $row['nama'] . "</option>";
                             } else {
                                 echo "<option value='" . $row['nrp'] . "'>" . $row['nama'] . "</option>";
                             }
@@ -60,43 +67,40 @@ require("class/classMahasiswa.php");
             </form>
         </div>
         <div class="table">
-            <table class="demo">
+            <table>
                 <tr>
                     <td></td>
                     <?php
                     while ($row1 = $hari->fetch_assoc()) {
-                        echo "<td class='demo td'>" . $row1['nama'] . "</td>";
+                        echo "<td>" . $row1['nama'] . "</td>";
                     }
                     ?>
                 </tr>
                 <?php
                 $i = 1;
                 // echo $jam_kuliah->num_rows;
-                 while ($row2 = $jam_kuliah->fetch_assoc()) {
-                     //echo "test <br>";
-                     //echo $i;
-                     for ($j = 1; $j <= 7; $j++) {
+                while ($row2 = $jam_kuliah->fetch_assoc()) {
+                    //echo "test <br>";
+                    //echo $i;
+                    for ($j = 1; $j <= 7; $j++) {
                         //  echo $i."_".$j."<br>";
                         $jadwal = $mahasiswa->getJadwalMahasiswa($pilihan, $j, $i);
                         // echo $jadwal->num_rows."<br>";
                         if ($j == 1) {
-                            $minggu = ($jadwal->num_rows > 0) ? "v" : "";
+                            $minggu = ($jadwal->num_rows > 0) ? "&#10003;" : "";
                         } else if ($j == 2) {
-                            $senin = ($jadwal->num_rows > 0) ? "v" : "";
+                            $senin = ($jadwal->num_rows > 0) ? "&#10003;" : "";
                         } else if ($j == 3) {
-                            $selasa = ($jadwal->num_rows > 0) ? "v" : "";
+                            $selasa = ($jadwal->num_rows > 0) ? "&#10003;" : "";
                         } else if ($j == 4) {
-                            $rabu = ($jadwal->num_rows > 0) ? "v" : "";
+                            $rabu = ($jadwal->num_rows > 0) ? "&#10003;" : "";
                         } else if ($j == 5) {
-                            $kamis = ($jadwal->num_rows > 0) ? "v" : "";
+                            $kamis = ($jadwal->num_rows > 0) ? "&#10003;" : "";
                         } else if ($j == 6) {
-                            $jumat = ($jadwal->num_rows > 0) ? "v" : "";
+                            $jumat = ($jadwal->num_rows > 0) ? "&#10003;" : "";
                         } else if ($j == 7) {
-                            $sabtu = ($jadwal->num_rows > 0) ? "v" : "";
+                            $sabtu = ($jadwal->num_rows > 0) ? "&#10003;" : "";
                         }
-
-                       
-                
                     }
                     echo "<tr>
                     <td style='min-width: 100px;'>
@@ -124,20 +128,27 @@ require("class/classMahasiswa.php");
                         $sabtu
                     </td>
                 </tr>";
-                     $i++;
+                    $i++;
                 }
 
                 ?>
             </table>
         </div>
-        <div style="text-align: center">
+        <div class="button">
             <form action="editjadwal.php" method="post">
                 <?php
                 if (isset($pilihan)) {
                     echo "<input type='hidden' name='nrp' value='$pilihan'>";
                 }
+
+                if (isset($_POST['mahasiswa'])) {
+                    echo '<input type="submit" value="Ubah Jadwal">';
+                } else if (isset($_COOKIE['mahasiswa'])) {
+                    echo '<input type="submit" value="Ubah Jadwal">';
+                } else {
+                    echo '<input type="submit" value="Ubah Jadwal" disabled>';
+                }
                 ?>
-                <input type="submit" value="Ubah Jadwal">
             </form>
         </div>
 

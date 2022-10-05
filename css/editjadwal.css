@@ -1,5 +1,21 @@
+.container {
+    border: 5px inset #9db9f0;
+    width: fit-content;
+}
+
+.button {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 50px 20px 50px;
+}
+
 table {
     border-spacing: 0px;
+    border: 1px solid black;
+    margin: 0px 50px 10px 50px;
+}
+
+tr {
     border: 1px solid black;
 }
 

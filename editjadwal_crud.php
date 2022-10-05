@@ -62,4 +62,4 @@ foreach ($arr as $a) {
     }
 }
 
-header('Location: editjadwal.php');
+header('Location: editjadwal.php?msg=success');

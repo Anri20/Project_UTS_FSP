@@ -1,27 +1,33 @@
-
 .container {
     border: 5px inset #9db9f0;
     width: fit-content;
 }
+
+.search{
+    padding: 50px;
+    padding-top: 10px;
+    padding-bottom: 15px;
+}
+
 .table{
     padding: 50px;
-    padding-top: 30px;
+    padding-top: 0px;
+    padding-bottom: 0px;
 }
 
-.demo {
-    border: 1px solid #000000;
-    border-collapse: collapse;
-    padding: 5px;
+.button{
+    text-align: center;
+    padding: 20px;
 }
 
-.demo th {
-    border: 1px solid #000000;
-    padding: 5px;
-    background: #F0F0F0;
-    min-width: 100px;
+table {
+    border-spacing: 0px;
+    border: 1px solid black;
 }
 
-.demo td {
-    border: 1px solid #000000;
+td {
+    min-width: 60px;
     padding: 5px;
+    text-align: center;
+    border: 1px solid black;
 }
