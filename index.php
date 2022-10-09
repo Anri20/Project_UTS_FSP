@@ -24,8 +24,6 @@ require("class/classMahasiswa.php");
         // $uname = "id19657553_henvis";
         // $pass = "\E(z51_u+fk9Zdaw";
         // $db_name = "id19657553_uts_fsp_jadwal";
-        
-        // $mahasiswa = new Mahasiswa($sname, $uname, $pass, $db_name);
 
         // For Local
         $sname = "localhost";
@@ -50,13 +48,14 @@ require("class/classMahasiswa.php");
                     $pilihan = '';
                     $res = $mahasiswa->query("select * from mahasiswa");
 
+
                     if (isset($_POST['mahasiswa'])) {
                         $pilihan = $_POST['mahasiswa'];
-                        setcookie('nrp', $_POST['mahasiswa'], time() + (3600));
+                        setcookie('nrp', $_POST['mahasiswa'], time() + (3600), "/");
                         while ($row = $res->fetch_assoc()) {
                             if ($row['nrp'] == $pilihan) {
                                 echo "<option value='" . $row['nrp'] . "' selected>" . $row['nama'] . "</option>";
-                                setcookie('mahasiswa', $row['nama'], time() + (3600));
+                                setcookie('mahasiswa', $row['nama'], time() + (3600), "/");
                             } else {
                                 echo "<option value='" . $row['nrp'] . "'>" . $row['nama'] . "</option>";
                             }

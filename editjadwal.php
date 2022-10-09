@@ -22,8 +22,6 @@ require("class/classEditJadwal.php");
     // $pass = "\E(z51_u+fk9Zdaw";
     // $db_name = "id19657553_uts_fsp_jadwal";
 
-    // $mahasiswa = new Mahasiswa($sname, $uname, $pass, $db_name);
-
     // For Local
     $sname = "localhost";
     $uname = "root";
