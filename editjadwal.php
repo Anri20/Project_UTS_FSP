@@ -18,9 +18,9 @@ require("class/classEditJadwal.php");
     <?php
     // For Hosting
     // $sname = "localhost";
-    // $uname = "id19657553_henvis";
-    // $pass = "\E(z51_u+fk9Zdaw";
-    // $db_name = "id19657553_uts_fsp_jadwal";
+    // $uname = "id19682257_hennvis";
+    // $pass = "7eGwCAa!mo9D-EVg";
+    // $db_name = "id19682257_uts_fsp_jadwal";
 
     // For Local
     $sname = "localhost";
