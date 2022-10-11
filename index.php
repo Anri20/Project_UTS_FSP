@@ -15,23 +15,31 @@ $db_name = "uts_fsp_jadwal";
 
 $mahasiswa = new Mahasiswa($sname, $uname, $pass, $db_name);
 
-$sql1 = "select * from hari";
-$hari = $mahasiswa->query($sql1);
-
-$sql2 = "select * from jam_kuliah";
-$jam_kuliah = $mahasiswa->query($sql2);
-
 $res = $mahasiswa->query("select * from mahasiswa");
 
 if (isset($_POST['mahasiswa'])) {
     $pilihan = $_POST['mahasiswa'];
-    setcookie('nrp', $_POST['mahasiswa'], time() + (3600), "/");
+    setcookie("nrp", $_POST['mahasiswa'], time() + (3600), "/");
     while ($row = $res->fetch_assoc()) {
         if ($row['nrp'] == $pilihan) {
-            setcookie('mahasiswa', $row['nama'], time() + (3600), "/");
+            setcookie("mahasiswa", $row['nama'], time() + (3600), "/");
         }
     }
-} ?>
+    
+    header("location: index.php");
+} else if (isset($_COOKIE['nrp'])){
+    
+} else{
+    $x = 0;
+    while ($row = $res->fetch_assoc()){
+        if ($x == 0){
+            setcookie("nrp", $row['nrp'], time() + (3600), "/");
+            setcookie("mahasiswa", $row['nama'], time() + (3600), "/");
+        }
+        $x++;
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -47,6 +55,15 @@ if (isset($_POST['mahasiswa'])) {
 
 <body>
     <div class="container">
+        <?php
+        $sql1 = "select * from hari";
+        $hari = $mahasiswa->query($sql1);
+        
+        $sql2 = "select * from jam_kuliah";
+        $jam_kuliah = $mahasiswa->query($sql2);
+        
+        $res = $mahasiswa->query("select * from mahasiswa");
+        ?>
         <h2 style="text-align: center">Jadwal</h2>
         <div class="search">
             <form action="index.php" method="post">
@@ -54,16 +71,8 @@ if (isset($_POST['mahasiswa'])) {
                     <option hidden>--Silakan Pilih Nama--</option>
                     <?php
                     $pilihan = '';
-
-                    if (isset($_POST['mahasiswa'])) {
-                        while ($row = $res->fetch_assoc()) {
-                            if ($row['nrp'] == $pilihan) {
-                                echo "<option value='" . $row['nrp'] . "' selected>" . $row['nama'] . "</option>";
-                            } else {
-                                echo "<option value='" . $row['nrp'] . "'>" . $row['nama'] . "</option>";
-                            }
-                        }
-                    } else if (isset($_COOKIE['nrp'])) {
+                    
+                    if (isset($_COOKIE['nrp'])) {
                         $pilihan = $_COOKIE['nrp'];
                         while ($row = $res->fetch_assoc()) {
                             if ($row['nrp'] == $pilihan) {
