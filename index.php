@@ -25,18 +25,21 @@ if (isset($_POST['mahasiswa'])) {
             setcookie("mahasiswa", $row['nama'], time() + (3600), "/");
         }
     }
+    setcookie("sudah_masuk", true, time() + (3600), "/");
     
     header("location: index.php");
 } else if (isset($_COOKIE['nrp'])){
-    
-} else{
-    $x = 0;
-    while ($row = $res->fetch_assoc()){
-        if ($x == 0){
-            setcookie("nrp", $row['nrp'], time() + (3600), "/");
-            setcookie("mahasiswa", $row['nama'], time() + (3600), "/");
-        }
+    setcookie("sudah_masuk", true, time() + (3600), "/");
+} else {
+    if (isset($_COOKIE['sudah_masuk'])){
+        $x = 0;
+        while ($row = $res->fetch_assoc()){
+            if ($x == 0){
+                setcookie("nrp", $row['nrp'], time() + (3600), "/");
+                setcookie("mahasiswa", $row['nama'], time() + (3600), "/");
+            }
         $x++;
+        }
     }
 }
 ?>
