@@ -127,46 +127,5 @@ if (isset($_GET['msg'])) {
     }
 }
 ?>
-<script>
-    // let arr = []
-    // $('#jadwal').find('input:checkbox').each(function() {
-    //     if ($(this).prop('checked') == true) {
-    //         arr.push($(this).val());
-    //     }
-
-    //     $.ajax({
-    //         type: 'POST',
-    //         url: 'editjadwal_crud.php',
-    //         data: {
-    //             'arr': arr
-    //         },
-    //     }).done(function(resp) {
-    //         // alert('success');
-    //     })
-    // })
-    // console.log(arr);
-    // $('.checkbox').change(function() {
-    //     if ($(this).prop('checked') == true) {
-    //         arr.push($(this).val());
-    //     } else {
-    //         let remove_item = $(this).val();
-    //         arr = jQuery.grep(arr, function(value) {
-    //             return value != remove_item;
-    //         })
-    //     }
-
-    //     // console.log(arr);
-
-    //     $.ajax({
-    //         type: 'POST',
-    //         url: 'editjadwal_crud.php',
-    //         data: {
-    //             'arr': arr
-    //         },
-    //     }).done(function(resp) {
-    //         // alert('success');
-    //     })
-    // })
-</script>
 
 </html>

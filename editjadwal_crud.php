@@ -58,7 +58,7 @@ foreach ($empty as $e) {
         $conn->deleteJadwal($nrp, $temp[1], $temp[0]);
     }
 }
-echo '<br>';
+
 // insert with $arr
 foreach ($arr as $a) {
     $temp = explode('_', $a);

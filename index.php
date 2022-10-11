@@ -1,7 +1,37 @@
 <?php
-// require("class/classEditJadwal.php");
 require("class/classMahasiswa.php");
-?>
+
+// For Hosting
+// $sname = "localhost";
+// $uname = "id19682257_hennvis";
+// $pass = "7eGwCAa!mo9D-EVg";
+// $db_name = "id19682257_uts_fsp_jadwal";
+
+// For Local
+$sname = "localhost";
+$uname = "root";
+$pass = "";
+$db_name = "uts_fsp_jadwal";
+
+$mahasiswa = new Mahasiswa($sname, $uname, $pass, $db_name);
+
+$sql1 = "select * from hari";
+$hari = $mahasiswa->query($sql1);
+
+$sql2 = "select * from jam_kuliah";
+$jam_kuliah = $mahasiswa->query($sql2);
+
+$res = $mahasiswa->query("select * from mahasiswa");
+
+if (isset($_POST['mahasiswa'])) {
+    $pilihan = $_POST['mahasiswa'];
+    setcookie('nrp', $_POST['mahasiswa'], time() + (3600), "/");
+    while ($row = $res->fetch_assoc()) {
+        if ($row['nrp'] == $pilihan) {
+            setcookie('mahasiswa', $row['nama'], time() + (3600), "/");
+        }
+    }
+} ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -16,29 +46,7 @@ require("class/classMahasiswa.php");
 </head>
 
 <body>
-
     <div class="container">
-        <?php
-        // For Hosting
-        // $sname = "localhost";
-        // $uname = "id19682257_hennvis";
-        // $pass = "7eGwCAa!mo9D-EVg";
-        // $db_name = "id19682257_uts_fsp_jadwal";
-
-        // For Local
-        $sname = "localhost";
-        $uname = "root";
-        $pass = "";
-        $db_name = "uts_fsp_jadwal";
-
-        $mahasiswa = new Mahasiswa($sname, $uname, $pass, $db_name);
-
-        $sql1 = "select * from hari";
-        $hari = $mahasiswa->query($sql1);
-
-        $sql2 = "select * from jam_kuliah";
-        $jam_kuliah = $mahasiswa->query($sql2);
-        ?>
         <h2 style="text-align: center">Jadwal</h2>
         <div class="search">
             <form action="index.php" method="post">
@@ -46,16 +54,11 @@ require("class/classMahasiswa.php");
                     <option hidden>--Silakan Pilih Nama--</option>
                     <?php
                     $pilihan = '';
-                    $res = $mahasiswa->query("select * from mahasiswa");
-
 
                     if (isset($_POST['mahasiswa'])) {
-                        $pilihan = $_POST['mahasiswa'];
-                        setcookie('nrp', $_POST['mahasiswa'], time() + (3600), "/");
                         while ($row = $res->fetch_assoc()) {
                             if ($row['nrp'] == $pilihan) {
                                 echo "<option value='" . $row['nrp'] . "' selected>" . $row['nama'] . "</option>";
-                                setcookie('mahasiswa', $row['nama'], time() + (3600), "/");
                             } else {
                                 echo "<option value='" . $row['nrp'] . "'>" . $row['nama'] . "</option>";
                             }
@@ -91,14 +94,10 @@ require("class/classMahasiswa.php");
                 </tr>
                 <?php
                 $i = 1;
-                // echo $jam_kuliah->num_rows;
                 while ($row2 = $jam_kuliah->fetch_assoc()) {
-                    //echo "test <br>";
-                    //echo $i;
                     for ($j = 1; $j <= 7; $j++) {
-                        //  echo $i."_".$j."<br>";
                         $jadwal = $mahasiswa->getJadwalMahasiswa($pilihan, $j, $i);
-                        // echo $jadwal->num_rows."<br>";
+
                         if ($j == 1) {
                             $minggu = ($jadwal->num_rows > 0) ? "&#10003;" : "";
                         } else if ($j == 2) {
@@ -168,13 +167,5 @@ require("class/classMahasiswa.php");
     </div>
 
 </body>
-<script>
-    // $('#Mahasiswa').change(function() {
-    //     localStorage.nrp = $('#Mahasiswa').val();
-    // })
-    // $('#btnsubmit').click(function(){
-    //     alert($pilihan);
-    // })
-</script>
 
 </html>
